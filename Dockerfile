@@ -50,9 +50,9 @@ FROM alpine:3.16 AS final
 # 把执行builder阶段的结果 /app/main拷贝到/app中
 COPY --from=builder /app/main /app
 # 把配置文件copy到/app/tsvbin中
-COPY ./token.json /app/token.json
-COPY ./config.json /app/config.json
-COPY ./prompt.txt /app/prompt.txt
+#COPY ./token.json /app/token.json
+#COPY ./config.json /app/config.json
+#COPY ./prompt.txt /app/prompt.txt
 
 USER app-runner
 
