@@ -30,6 +30,7 @@
 
 
 FROM golang:1.18-alpine3.16 AS builder
+WORKDIR /app
 
 RUN adduser -u 10001 -D app-runner
 
@@ -44,7 +45,6 @@ RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -a -o main
 
 FROM alpine:3.16 AS final
 
-WORKDIR /app
 
 #拷贝上下文目录（宿主机目录）到容器 /build目录下
 # 把执行builder阶段的结果 /app/main拷贝到/app中
