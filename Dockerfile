@@ -22,3 +22,5 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /build/token.json /app/
  
 USER app-runner
+
+ENTRYPOINT ["/app/httpserver"]
