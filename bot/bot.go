@@ -2,6 +2,7 @@ package bot
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/riba2534/openwechat"
 	"github.com/skip2/go-qrcode"
@@ -13,6 +14,7 @@ func Init() error {
 	Bot = openwechat.DefaultBot(openwechat.Desktop) // 桌面模式，上面登录不上的可以尝试切换这种模式
 	Bot.UUIDCallback = consoleQrCode                // 注册登陆二维码回调
 	reloadStorage := openwechat.NewFileHotReloadStorage("token.json")
+	log.Printf("reloadStorage:%+v\n", reloadStorage)
 	return Bot.HotLogin(reloadStorage, openwechat.NewRetryLoginOption())
 }
 
