@@ -1,0 +1,18 @@
+{
+    "wechat_config": {
+        "text_config": {
+            "openapi_url": "https://api.openai.com/v1",
+            "auth_token": "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",
+            "trigger_prefix": "robot-text"
+        },
+        "image_config": {
+            "openapi_url": "https://api.openai.com/v1/completions",
+            "auth_token": "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",
+            "trigger_prefix": "robot-image"
+        }
+    },
+    "context_config": {
+        "switch_on": true,
+        "cache_minute": 3
+    }
+}
