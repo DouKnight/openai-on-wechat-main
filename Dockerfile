@@ -31,7 +31,6 @@
 
 FROM golang:1.18-alpine3.16 AS builder
 
-WORKDIR /build
 RUN adduser -u 10001 -D app-runner
 
 ENV GOPROXY https://goproxy.cn
@@ -39,17 +38,22 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
+## 把当前目录的所有内容copy到 WORKDIR指定的目录中
 COPY . .
-RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -a -o httpserver .
+RUN CGO_ENABLED=0 GOARCH=amd64 GOOS=linux go build -a -o main
 
 FROM alpine:3.16 AS final
 
 WORKDIR /app
-COPY --from=builder /build/httpserver /app/
-#COPY --from=builder /build/config /app/config
-COPY --from=builder /etc/passwd /etc/passwd
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+
+#拷贝上下文目录（宿主机目录）到容器 /build目录下
+# 把执行builder阶段的结果 /app/main拷贝到/app中
+COPY --from=builder /app/main /app
+# 把配置文件copy到/app/tsvbin中
+COPY ./token.json /app/token.json
+COPY ./config.json /app/config.json
+COPY ./prompt.txt /app/prompt.txt
 
 USER app-runner
 
-ENTRYPOINT ["/app/httpserver"]
+ENTRYPOINT ["/app/main"]
